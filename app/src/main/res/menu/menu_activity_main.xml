@@ -1,0 +1,69 @@
+<!-- sample_menu.xml -->
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- https://fonts.google.com/icons?selected=Material+Icons -->
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="@string/search"
+        app:showAsAction="collapseActionView|ifRoom|withText"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item
+        android:id="@+id/action_quit"
+        android:icon="@drawable/ic_outline_lock_24"
+        android:title="beenden"
+        app:showAsAction="ifRoom|withText"/>
+
+    <item
+        android:id="@+id/action_add"
+        android:icon="@drawable/ic_baseline_add_circle_outline_24"
+        android:title="@string/addEntry"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_importClipboard"
+        android:icon="@drawable/ic_baseline_playlist_add_24"
+        android:title="importieren"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_importFile"
+        android:icon="@drawable/ic_baseline_playlist_add_24"
+        android:title="Datei importieren"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_deleteAllEntries"
+        android:icon="@drawable/ic_baseline_delete_outline_24"
+        android:title="Datenbank löschen"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_exportMasterkey"
+        android:icon="@drawable/ic_baseline_help_outline_24"
+        android:title="Export Masterkey"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_help"
+        android:icon="@drawable/ic_baseline_help_outline_24"
+        android:title="Hilfe"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_licenseInformation"
+        android:icon="@drawable/ic_outline_info_24"
+        android:title="Lizenzen"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_about"
+        android:icon="@drawable/ic_outline_perm_device_information_24"
+        android:title="über das Programm"
+        app:showAsAction="never"/>
+
+</menu>
