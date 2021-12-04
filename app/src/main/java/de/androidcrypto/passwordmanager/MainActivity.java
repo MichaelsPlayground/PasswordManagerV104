@@ -1,12 +1,9 @@
 package de.androidcrypto.passwordmanager;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Process;
-import android.security.keystore.KeyGenParameterSpec;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,32 +13,23 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.biometric.BiometricManager;
-import androidx.biometric.BiometricPrompt;
-import androidx.core.content.ContextCompat;
-import androidx.core.os.CancellationSignal;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.security.crypto.EncryptedFile;
-import androidx.security.crypto.MasterKeys;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.concurrent.Executor;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ILockableActivity {
+
+    // stay on implementation 'androidx.appcompat:appcompat:1.3.1'
+    // do not update to 1.4.0 if you are on SDK30
 
     // service infos
     // https://github.com/IvBaranov/MaterialFavoriteButton
@@ -52,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
     // add in gradle.build (module)
     // implementation "androidx.security:security-crypto:1.0.0"
     // https://developer.android.com/topic/security/data
+
+    // sdk version checks, correct values added later in checkSdkVersion
+    private int sdkVersion = 20;
+    private boolean sdkIsMin23Max29 = false; // sdk version is in the range 23-29 [VERSION_CODES.M-Q]
+    private boolean sdkIsMin30 = false; // sdk version is in the range 30+ [VERSION_CODES.R]
+    private static final int BIOMETRIC_STRONG = BiometricManager.Authenticators.BIOMETRIC_STRONG;
+    private static final int BIOMETRIC_WEAK = BiometricManager.Authenticators.BIOMETRIC_WEAK; // not used
+    private static final int DEVICE_CREDENTIAL = BiometricManager.Authenticators.DEVICE_CREDENTIAL;
 
     // stores data in an encrypted file
     String mainKeyAlias; // for the masterKey
@@ -67,6 +63,26 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<EntryModel> entryModelArrayList;
     private EntryRVAdapter entryRVAdapter;
     private RecyclerView entriesRV;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //RecyclerView recyclerView = findViewById(R.id.idRVEntries);
+        //recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void lock() {
+        RecyclerView recyclerView = findViewById(R.id.idRVEntries);
+        recyclerView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void unlock() {
+        RecyclerView recyclerView = findViewById(R.id.idRVEntries);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +104,11 @@ public class MainActivity extends AppCompatActivity {
         // creating a new dbhandler class
         // and passing our context to it.
         dbHandler = new DBHandler(MainActivity.this);
+
+        // activate on creation
+        RecyclerView recyclerView = findViewById(R.id.idRVEntries);
+        recyclerView.setVisibility(View.VISIBLE);
+
         entryModelArrayList = new ArrayList<>();
 
         // list from db handler class.
@@ -120,6 +141,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        checkSdkVersion();
+        boolean biometricReadyToUse = checkBiometric();
+        if (biometricReadyToUse) {
+            // nothing special, app runs as expected
+        } else {
+            String message = "Auf diesem Gerät wurde noch keine\nSperrbildschirm-PIN und/oder kein\nFingerprint registriert.\n\nDie App kann nicht gestartet werden.";
+            //alertView(message);
+            errorAndQuitAlert(message);
+        }
 
 /* manifests.xml org without fingerprint authentication
             <intent-filter>
@@ -371,4 +402,44 @@ public class MainActivity extends AppCompatActivity {
         HelpDialogFragment dialog = HelpDialogFragment.newInstance();
         dialog.show(getSupportFragmentManager(), "HelpDialog");
     }
+
+    // sdk checks
+    private void checkSdkVersion() {
+        sdkVersion = Build.VERSION.SDK_INT;
+        // check for SDK 30+
+        if (sdkVersion >= Build.VERSION_CODES.R) {
+            sdkIsMin30 = true;
+        }
+        // check for SDK in range 23-29
+        if (sdkVersion < Build.VERSION_CODES.R &
+                sdkVersion >= Build.VERSION_CODES.M) {
+            sdkIsMin23Max29 = true;
+        }
+    }
+
+    // check if Biometric is ready to use
+    private boolean checkBiometric() {
+        BiometricManager biometricManager = BiometricManager.from(this);
+        int success = biometricManager.canAuthenticate(BIOMETRIC_STRONG | DEVICE_CREDENTIAL);
+        if (success == BiometricManager.BIOMETRIC_SUCCESS) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // error dialog
+    private void alertView(String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        alertDialog.setTitle("Fehler");
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        alertDialog.show();
+    }
+
 }

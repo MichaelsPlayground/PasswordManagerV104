@@ -6,7 +6,7 @@
     <string name="action_help">Hilfe zum Programm</string>
     <string name="action_licenses">Verwendete Bibliotheken und Lizenzen</string>
     <string name="appVersion">Version</string>
-    <string name="appVersionData">1.0.2</string>
+    <string name="appVersionData">1.0.3</string>
     <!-- appVersionData auch in build.gradle app/module ändern ! -->
     <string name="titleAbout">Über diese App</string>
     <string name="programmer">Michael Fehr</string>

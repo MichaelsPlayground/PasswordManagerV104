@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
 
-public class AddEntryActivity extends AppCompatActivity {
+public class AddEntryActivity extends AppCompatActivity implements ILockableActivity {
 
     // variables for our edit text, button, strings and dbhandler class.
     private EditText etEntryname, etLoginName, etLoginPassword, etCategory;
@@ -22,6 +22,23 @@ public class AddEntryActivity extends AppCompatActivity {
     private Button btnAddEntry;
     private DBHandler dbHandler;
     String entryName, entryLoginName, entryLoginPassword, entryCategory;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void lock() {
+        etLoginPassword.setVisibility(View.GONE);
+        etLoginName.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void unlock() {
+        etLoginPassword.setVisibility(View.VISIBLE);
+        etLoginName.setVisibility(View.VISIBLE);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +58,10 @@ public class AddEntryActivity extends AppCompatActivity {
 
         // on below line we are initialing our dbhandler class.
         dbHandler = new DBHandler(AddEntryActivity.this);
+
+        // enable on create
+        etLoginPassword.setVisibility(View.VISIBLE);
+        etLoginName.setVisibility(View.VISIBLE);
 
         // on below lines we are getting data which
         // we passed in our adapter class.
