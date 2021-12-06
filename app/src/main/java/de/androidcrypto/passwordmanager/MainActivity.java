@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AlertDialog;
@@ -54,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements ILockableActivity
     String encryptedPreferencesFilename = "encryptedpreferences.dat";
 
     FloatingActionButton btnAddEntry;
-    // service buttons
-    Button btnCountEntries;
 
     private DBHandler dbHandler;
 
@@ -67,8 +64,6 @@ public class MainActivity extends AppCompatActivity implements ILockableActivity
     @Override
     protected void onResume() {
         super.onResume();
-        //RecyclerView recyclerView = findViewById(R.id.idRVEntries);
-        //recyclerView.setVisibility(View.GONE);
     }
 
     @Override
@@ -151,47 +146,6 @@ public class MainActivity extends AppCompatActivity implements ILockableActivity
             //alertView(message);
             errorAndQuitAlert(message);
         }
-
-/* manifests.xml org without fingerprint authentication
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
- */
-
-
-/*
-        // service buttons
-        btnCountEntries = (Button) findViewById(R.id.idBtnCountEntries);
-        btnCountEntries.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int countEntries = dbHandler.readEntries().size();
-                System.out.println("countEntries: " + countEntries);
-            }
-        });
-/*
-        btnCountEntries.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                v.setHapticFeedbackEnabled(true);
-                v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                System.out.println("countEntries long clicked");
-                return false;
-            }
-        });
-*/
-
-/*
-        btnCountEntries = (Button) findViewById(R.id.idBtnCountEntries);
-        btnCountEntries.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
- */
 
     }
 

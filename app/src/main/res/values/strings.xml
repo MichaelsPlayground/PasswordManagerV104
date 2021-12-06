@@ -11,7 +11,7 @@
     <string name="titleAbout">Über diese App</string>
     <string name="programmer">Michael Fehr</string>
     <!-- <string name="projectPage"><a href="http://androidcrypto.bplaced.net/android/qrcode.html">http://java-crypto.bplaced.net/android/impfzertifikat.html</a></string> -->
-    <string name="projectPage"><a href="http://androidcrypto.bplaced.net/">http://androidcrypto.bplaced.net/</a></string>
+    <string name="projectPage"><a href="http://androidcrypto.bplaced.net/passwordmanager/">http://androidcrypto.bplaced.net/passwordmanager/</a></string>
     <string name="infoProjectPage">Projektseite</string>
     <string name="programmername">Programmierer</string>
     <string name="appiconname">App Icon</string>
