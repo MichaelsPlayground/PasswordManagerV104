@@ -210,6 +210,161 @@ public class Cryptography {
         }
     }
 
+    // ## version 1.0.2b ##
+    public static String encryptDatabaseAesGcmToBase64(char[] passphrase, String fileContent) {
+        if (masterKey.length < 32) return "";
+        // key derivation
+        SecretKeyFactory secretKeyFactory = null;
+        byte[] key;
+        byte[] salt = generateSalt32Byte();
+        byte[] nonce = generateRandomNonce();
+        try {
+            secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            KeySpec keySpec = new PBEKeySpec(passphrase, salt, fileImportIterations, 32 * 8);
+            key = secretKeyFactory.generateSecret(keySpec).getEncoded();
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+            return "";
+        }
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(16 * 8, nonce);
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance("AES/GCM/NOPadding");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, gcmParameterSpec);
+            byte[] ciphertextWithTag = cipher.doFinal(fileContent.getBytes(StandardCharsets.UTF_8));
+            byte[] ciphertext = new byte[(ciphertextWithTag.length-16)];
+            byte[] gcmTag = new byte[16];
+            System.arraycopy(ciphertextWithTag, 0, ciphertext, 0, (ciphertextWithTag.length - 16));
+            System.arraycopy(ciphertextWithTag, (ciphertextWithTag.length-16), gcmTag, 0, 16);
+            String saltBase64 = base64Encoding(salt);
+            String nonceBase64 = base64Encoding(nonce);
+            String ciphertextBase64 = base64Encoding(ciphertext);
+            String gcmTagBase64 = base64Encoding(gcmTag);
+            return fileImportHeaderLine + "\n"
+                    + saltBase64 + ":" + nonceBase64 + ":" + ciphertextBase64 + ":" + gcmTagBase64
+                    + "\n" + fileImportFooterLine;
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    // ## version 1.02b ##
+    // gets the export passphrase and the masterkey export data,
+    // returns the masterkey in Base64 encoding
+    public static String decryptMasterkeyAesGcmFromBase64(char[] passphrase, String fileContent) {
+        // sanity check on header and footer of fileContent
+        if (!fileContent.contains(masterkeyImportHeaderLine) |
+                !fileContent.contains(masterkeyImportFooterLine)) {
+            return"";
+        }
+        // get data
+        String ciphertextBase64 = fileContent.replace(masterkeyImportHeaderLine, "")
+                .replace(masterkeyImportFooterLine, "")
+                .replaceAll("[\\r\\n]+", "");
+        if (!ciphertextBase64.contains(":")) return "";
+        String[] parts = ciphertextBase64.split(":", 0);
+        byte[] salt = base64Decoding(parts[0]);
+        byte[] nonce = base64Decoding(parts[1]);
+        byte[] ciphertext = base64Decoding(parts[2]);
+        byte[] gcmTag = base64Decoding(parts[3]);
+        if ((salt.length != 32) | (nonce.length != 12) | (ciphertext.length < 1) | (gcmTag.length != 16)) return "";
+        byte[] ciphertextWithTag = concatenateByteArrays(ciphertext, gcmTag);
+        // key derivation
+        SecretKeyFactory secretKeyFactory = null;
+        byte[] key;
+        try {
+            secretKeyFactory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+            KeySpec keySpec = new PBEKeySpec(passphrase, salt, fileImportIterations, 32 * 8);
+            key = secretKeyFactory.generateSecret(keySpec).getEncoded();
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            e.printStackTrace();
+            return "";
+        }
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key, "AES");
+        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(16 * 8, nonce);
+        Cipher cipher = null;
+        try {
+            cipher = Cipher.getInstance("AES/GCM/NOPadding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, gcmParameterSpec);
+            byte[] decryptedtext = cipher.doFinal(ciphertextWithTag);
+            // decryptedtext contains the decrypted masterkey
+            return base64Encoding(decryptedtext);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
+
+    // ### version 1.0.2b
+    public static boolean setMasterkey(Context applicationContext, String masterkeyBase64) {
+        // Although you can define your own key generation parameter specification, it's
+        // recommended that you use the value specified here.
+        keyGenParameterSpec = MasterKeys.AES256_GCM_SPEC;
+        try {
+            mainKeyAlias = MasterKeys.getOrCreate(keyGenParameterSpec);
+        } catch (GeneralSecurityException | IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        // overwrite an existing masterkey
+        // for updating we have to delete the file, function does not overwrite the data
+        File encryptedFilename = new File(applicationContext.getFilesDir(), encryptedPreferencesFilename);
+        // create and store a new key only if file does not not exist
+        if (encryptedFilename.exists()) {
+            encryptedFilename.delete();
+        }
+        if (!encryptedFilename.exists()) {
+            EncryptedFile encryptedFile = null;
+            try {
+                encryptedFile = new EncryptedFile.Builder(
+                        // store in internal app storage
+                        new File(applicationContext.getFilesDir(), encryptedPreferencesFilename),
+                        applicationContext,
+                        mainKeyAlias,
+                        EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+                ).build();
+                masterKey = base64Decoding(masterkeyBase64);
+                OutputStream outputStream = null;
+                outputStream = encryptedFile.openFileOutput();
+                outputStream.write(masterKey);
+                outputStream.flush();
+                outputStream.close();
+            } catch (GeneralSecurityException | IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        } else {
+            // load the existing masterKey
+            EncryptedFile encryptedFile = null;
+            ByteArrayOutputStream byteArrayOutputStream = null;
+            try {
+                encryptedFile = new EncryptedFile.Builder(
+                        // store from internal app storage
+                        new File(applicationContext.getFilesDir(), encryptedPreferencesFilename),
+                        applicationContext,
+                        mainKeyAlias,
+                        EncryptedFile.FileEncryptionScheme.AES256_GCM_HKDF_4KB
+                ).build();
+                InputStream inputStream = encryptedFile.openFileInput();
+                byteArrayOutputStream = new ByteArrayOutputStream();
+                int nextByte = 0;
+                nextByte = inputStream.read();
+                while (nextByte != -1) {
+                    byteArrayOutputStream.write(nextByte);
+                    nextByte = inputStream.read();
+                }
+                masterKey = byteArrayOutputStream.toByteArray();
+            } catch (IOException | GeneralSecurityException e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+    }
+
     public static String encryptMasterkeyAesGcmToBase64(char[] passphrase) {
         if (masterKey.length < 32) return "";
         // key derivation

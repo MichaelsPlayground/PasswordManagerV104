@@ -25,36 +25,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Name des Eintrages" />
+        android:hint="Name des Eintrages"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/idEtLoginName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Login Name" />
+        android:hint="Login Name"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/idEtLoginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Login Passwort" />
+        android:hint="Login Passwort"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/idEtCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Kategorie" />
+        android:hint="Kategorie"
+        android:minHeight="48dp" />
 
-    <CheckBox android:id="@+id/idCbFavourite"
+    <CheckBox
+        android:id="@+id/idCbFavourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:buttonTint="@color/colorPrimary"
+        android:minHeight="48dp"
         android:text="Favorit"
-        />
+        app:buttonTint="@color/colorPrimary" />
 
     <Button
         android:id="@+id/idBtAddEntry"

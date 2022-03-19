@@ -239,6 +239,17 @@ public class MainActivity extends AppCompatActivity implements ILockableActivity
                 return false;
             }
         });
+
+        MenuItem mExportDatabase = menu.findItem(R.id.action_exportDatabase);
+        mExportDatabase.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                Intent i = new Intent(MainActivity.this, DatabaseExportFile.class);
+                startActivity(i);
+                return false;
+            }
+        });
+
         MenuItem mHelpInformation = menu.findItem(R.id.action_help);
         mHelpInformation.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override

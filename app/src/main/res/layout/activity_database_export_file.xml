@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:isScrollContainer="true"
     android:orientation="vertical"
-    tools:context=".MasterkeyExportClipboard">
+    tools:context=".DatabaseExportFile">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +34,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
-            android:text="Im- und Export des Masterkeys"
+            android:text="Export der Datenbank"
             android:textAlignment="center"
             android:textSize="@dimen/title_size"
             android:textStyle="bold" />
@@ -53,7 +53,7 @@
 
 
         <EditText
-            android:id="@+id/etPassphraseMasterkeyExport"
+            android:id="@+id/etPassphraseDatabaseExport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -70,34 +70,24 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnExportMasterkeyToClipboard"
+                android:id="@+id/btnExportDatabaseToFile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
-                android:text="exportiere den\nMasterkey"
+                android:text="exportiere die\nDatenbank"
                 android:textAllCaps="false" />
 
             <Button
-                android:id="@+id/btnCopyMasterkeyToClipboard"
+                android:id="@+id/btnSaveDatabaseToFile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="18dp"
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="8dp"
-                android:text="kopiere den\nMasterkey in\ndie Zwischenablage"
-                android:textAllCaps="false" />
-
-            <Button
-                android:id="@+id/btnImportMasterkeyFromClipboard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                android:text="importiere den\nMasterkey"
+                android:text="speichere die\nDatenbank in\neine Datei"
                 android:textAllCaps="false" />
 
         </LinearLayout>
@@ -115,7 +105,7 @@
             android:textSize="20sp" />
 
         <EditText
-            android:id="@+id/etMasterkeyContentExport"
+            android:id="@+id/etDatabaseContentExport"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

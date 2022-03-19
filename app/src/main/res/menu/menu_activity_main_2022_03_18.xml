@@ -49,12 +49,6 @@
         app:showAsAction="never"/>
 
     <item
-        android:id="@+id/action_exportDatabase"
-        android:icon="@drawable/ic_baseline_help_outline_24"
-        android:title="Export Database"
-        app:showAsAction="never"/>
-
-    <item
         android:id="@+id/action_help"
         android:icon="@drawable/ic_baseline_help_outline_24"
         android:title="Hilfe"

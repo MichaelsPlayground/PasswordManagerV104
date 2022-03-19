@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,32 +13,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
-import java.util.concurrent.Callable;
-import java.util.zip.InflaterOutputStream;
-
-import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
-
-import static android.content.ClipDescription.MIMETYPE_TEXT_PLAIN;
-
-public class MasterkeyExportClipboard extends AppCompatActivity {
+public class MasterkeyExportClipboard_2022_03_19 extends AppCompatActivity {
 
     Button btnExportMasterkey, btnCopyMasterkeyToClipboard;
-    Button btnImportMasterkey; // ## version 1.0.2b ##
     int minimumPassphraseLength = 4; // todo password length
 
     @Override
@@ -49,34 +25,6 @@ public class MasterkeyExportClipboard extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
-
-        // ## version 1.0.2b ##
-        btnImportMasterkey = findViewById(R.id.btnImportMasterkeyFromClipboard);
-        btnImportMasterkey.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // rough code
-                // get the passphrase
-                EditText etPassphrase = (EditText) findViewById(R.id.etPassphraseMasterkeyExport);
-                int passphraseLength = 0;
-                if (etPassphrase != null) {
-                    passphraseLength = etPassphrase.length();
-                }
-                //System.out.println("passphrase length: " + passphraseLength);
-                // todo check for minimum length
-                // get the passphrase as char[]
-                char[] passphrase = new char[passphraseLength];
-                etPassphrase.getText().getChars(0, passphraseLength, passphrase, 0);
-
-
-                EditText etData = (EditText) findViewById(R.id.etMasterkeyContentExport);
-                String masterkeyExportData = etData.getText().toString();
-                String decryptedMasterkeyBase64 = Cryptography.decryptMasterkeyAesGcmFromBase64(passphrase, masterkeyExportData);
-                etData.setText(decryptedMasterkeyBase64);
-                // save the new masterkey
-                Cryptography.setMasterkey(v.getContext(), decryptedMasterkeyBase64);
-            }
-        });
 
         btnExportMasterkey = (Button) findViewById(R.id.btnExportMasterkeyToClipboard);
         btnExportMasterkey.setOnClickListener(new View.OnClickListener() {
@@ -95,10 +43,8 @@ public class MasterkeyExportClipboard extends AppCompatActivity {
                 etPassphrase.getText().getChars(0, passphraseLength, passphrase, 0);
 
                 // get the data from edittext and split into lines
-                // get the data from edittext and split into lines
                 EditText etData = (EditText) findViewById(R.id.etMasterkeyContentExport);
                 etData.setText(Cryptography.encryptMasterkeyAesGcmToBase64(passphrase));
-                //etData.setText(Cryptography.encryptMasterkeyAesGcmToBase64(passphrase));
 
             }
         });
@@ -116,9 +62,9 @@ public class MasterkeyExportClipboard extends AppCompatActivity {
                 ClipData clip = ClipData.newPlainText("simple text", data);
                 // Set the clipboard's primary clip.
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(MasterkeyExportClipboard.this, "Masterkey ins Clipboard kopiert..", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MasterkeyExportClipboard_2022_03_19.this, "Masterkey ins Clipboard kopiert..", Toast.LENGTH_SHORT).show();
                 // back to main activity
-                Intent i=new Intent(MasterkeyExportClipboard.this, MainActivity.class);
+                Intent i=new Intent(MasterkeyExportClipboard_2022_03_19.this, MainActivity.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }
@@ -132,4 +78,4 @@ w0/5AdcuFrNweAQ6+ryBxAxxL3wVRu1aCrxe1N+bV3I=:S0nMwdtEL12ruZZG:/v2vDifM9bMNVQeoKD
 ### PWMANAGER MASTERKEY END V1 ###
 */
 /*
- */
+*/

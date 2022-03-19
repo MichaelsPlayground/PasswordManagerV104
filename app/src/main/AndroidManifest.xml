@@ -21,6 +21,7 @@
         <activity android:name=".UpdateEntryActivity" />
         <activity android:name=".DatabaseImportClipboard" />
         <activity android:name=".DatabaseImportFile" />
+        <activity android:name=".DatabaseExportFile" />
         <activity android:name=".MasterkeyExportClipboard" />
         <activity android:name=".AboutActivity" />
      <!--   <activity android:name=".MainActivity"/> -->

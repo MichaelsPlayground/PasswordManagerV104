@@ -19,7 +19,7 @@ public class UpdateEntryActivity extends AppCompatActivity implements ILockableA
     // variables for our edit text, button, strings and dbhandler class.
     private EditText etEntryname, etLoginName, etLoginPassword, etCategory;
     private CheckBox cbFavourite;
-    private Button btnUpdateEntry, btnDeleteEntry;
+    private Button btnReturnEntry, btnUpdateEntry, btnDeleteEntry;
     private DBHandler dbHandler;
     String entryId, entryName, entryLoginName, entryLoginPassword, entryCategory, entryFavourite;
 
@@ -65,6 +65,7 @@ public class UpdateEntryActivity extends AppCompatActivity implements ILockableA
         etLoginPassword = findViewById(R.id.idEtLoginPassword);
         etCategory = findViewById(R.id.idEtCategory);
         cbFavourite = findViewById(R.id.idCbFavourite);
+        btnReturnEntry = findViewById(R.id.idBtReturnEntry);
         btnUpdateEntry = findViewById(R.id.idBtUpdateEntry);
         btnDeleteEntry = findViewById(R.id.idBtDeleteEntry);
 
@@ -93,6 +94,14 @@ public class UpdateEntryActivity extends AppCompatActivity implements ILockableA
         } else {
             cbFavourite.setChecked(false);
         }
+
+        btnReturnEntry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(UpdateEntryActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
 
         btnUpdateEntry.setOnClickListener(new View.OnClickListener() {
             @Override

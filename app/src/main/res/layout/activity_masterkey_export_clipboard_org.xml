@@ -34,7 +34,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
-            android:text="Im- und Export des Masterkeys"
+            android:text="Export des Masterkeys"
             android:textAlignment="center"
             android:textSize="@dimen/title_size"
             android:textStyle="bold" />
@@ -60,8 +60,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
             android:hint="Passwort"
-            android:inputType="textPersonName"
-            android:minHeight="48dp" />
+            android:inputType="textPersonName" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -90,16 +89,6 @@
                 android:text="kopiere den\nMasterkey in\ndie Zwischenablage"
                 android:textAllCaps="false" />
 
-            <Button
-                android:id="@+id/btnImportMasterkeyFromClipboard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                android:text="importiere den\nMasterkey"
-                android:textAllCaps="false" />
-
         </LinearLayout>
 
         <TextView
@@ -126,8 +115,7 @@
             android:gravity="start|top"
             android:inputType="textMultiLine"
             android:isScrollContainer="true"
-            android:minLines="8"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:minLines="8" />
 
     </LinearLayout>
 </ScrollView>

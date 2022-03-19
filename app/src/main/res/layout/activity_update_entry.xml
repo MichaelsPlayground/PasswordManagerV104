@@ -25,56 +25,80 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Name des Eintrages" />
+        android:hint="Name des Eintrages"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/idEtLoginName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Login Name" />
+        android:hint="Login Name"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/idEtLoginPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Login Passwort" />
+        android:hint="Login Passwort"
+        android:minHeight="48dp" />
 
     <EditText
         android:id="@+id/idEtCategory"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:hint="Kategorie" />
+        android:hint="Kategorie"
+        android:minHeight="48dp" />
 
-    <CheckBox android:id="@+id/idCbFavourite"
+    <CheckBox
+        android:id="@+id/idCbFavourite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        app:buttonTint="@color/colorPrimary"
-        android:textSize="20sp"
+        android:minHeight="48dp"
         android:text="Favorit"
-        />
+        android:textSize="20sp"
+        app:buttonTint="@color/colorPrimary" />
+
+    <Button
+        android:id="@+id/idBtReturnEntry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/colorPrimary"
+        android:text="zurück zur Liste"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/idBtUpdateEntry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Eintrag ändern"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
         android:background="@color/colorPrimary"
+        android:text="Eintrag ändern"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textAllCaps="false" />
+        tools:ignore="TextContrastCheck" />
 
     <Button
         android:id="@+id/idBtDeleteEntry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:text="Eintrag löschen"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
         android:background="@color/colorPrimary"
+        android:text="Eintrag löschen"
+        android:textAllCaps="false"
         android:textColor="@color/white"
-        android:textAllCaps="false" />
+        tools:ignore="TextContrastCheck" />
 
 </LinearLayout>
