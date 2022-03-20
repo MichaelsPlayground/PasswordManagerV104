@@ -63,7 +63,7 @@
         app:buttonTint="@color/colorPrimary" />
 
     <Button
-        android:id="@+id/idBtReturnEntry"
+        android:id="@+id/idBtReturnToMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
