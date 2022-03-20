@@ -11,6 +11,9 @@
         <entry key="app/src/main/res/layout/activity_update_entry.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_update_entry_org2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_help.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/entry_rv_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/entry_rv_item_old.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/entry_rv_item_old2.xml" value="0.1" />
         <entry key="app/src/main/res/menu/menu_activity_main.xml" value="0.19814814814814816" />
         <entry key="app/src/main/res/menu/menu_activity_main_2022_03_18.xml" value="0.19814814814814816" />
       </map>
